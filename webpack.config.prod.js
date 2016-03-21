@@ -10,11 +10,11 @@ module.exports = {
     path: __dirname + '/static/dist/',
     filename: 'bundle.js',
   },
-  
+
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
-  
+
   module: {
     loaders: [
       {

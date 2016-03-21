@@ -28,7 +28,7 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
-// import posts from './routes/post.routes';  -----------import all the routes ------
+import lists from './routes/lists.routes';
 import exampleData from './exampleData';
 import serverConfig from './config';
 
@@ -47,7 +47,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-//app.use('/api', posts);  -------routes------
+app.use('/api', lists);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -69,6 +69,10 @@ const renderFullPage = (html, initialState) => {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
         </script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+          var socket = io();
+        </script>
         <script src="/dist/bundle.js"></script>
       </body>
     </html>
@@ -76,20 +80,23 @@ const renderFullPage = (html, initialState) => {
 };
 
 // Server Side Rendering based on routes matched by React-router.
-app.use((req, res) => {
+app.use((req, res, next) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
     if (err) {
       return res.status(500).end('Internal server error');
     }
 
+    if (redirectLocation) {
+      return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    }
+
     if (!renderProps) {
-      return res.status(404).end('Not found!');
+      return next();
     }
 
     const initialState = { };
 
     const store = configureStore(initialState);
-
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {
         const initialView = renderToString(
@@ -98,7 +105,7 @@ app.use((req, res) => {
           </Provider>
         );
         const finalState = store.getState();
-console.log('finasState ============>', finalState);
+
         res.status(200).end(renderFullPage(initialView, finalState));
       })
       .catch(() => {
@@ -108,12 +115,28 @@ console.log('finasState ============>', finalState);
 });
 
 // start app
-app.listen(serverConfig.port, (error) => {
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+// Socket.IO part
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.on('new:list', function(list){
+    io.emit('new:list', list);
+  });
+});
+
+//conection
+server.listen(serverConfig.port, (error) => {
   if (!error) {
     console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
-  } else {
-    console.log(error);
   }
 });
+
+
 
 export default app;

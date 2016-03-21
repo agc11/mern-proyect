@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import * as Actions from '../redux/actions/actions';
 
 class App extends Component {
   constructor(props, context) {
@@ -9,7 +10,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>titulo</h1>
         { this.props.children }
       </div>
     );

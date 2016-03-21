@@ -1,8 +1,10 @@
 {
-  "name": "mern-structure",
+  "name": "mern-starter",
   "version": "1.0.0",
-  "description": "mern structure",
+  "description": "Boilerplate project for building Isomorphic apps using React and Redux",
   "scripts": {
+    "test": "mocha shared/tests/*.spec.js --compilers js:babel-register",
+    "test:server": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/mern-test mocha --compilers js:babel-register --recursive server/tests/**/*.spec.js",
     "start": "cross-env NODE_ENV=development node index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js",
     "bs": "npm run clean && npm run build && npm run start:prod",
@@ -17,8 +19,16 @@
     "test",
     "test:server"
   ],
-  "author": "agc11",
-  "license": "SIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hashnode/mern-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hashnode/mern-starter/issues"
+  },
+  "homepage": "https://github.com/Hashnode/mern-starter#readme",
+  "author": "Prashant Abhishek <prashant.abhishek7g@gmail.com>, Mayank Chandola <imayankchd@gmail.com>, Sandeep Panda <sandeep@hashnode.com>, Syed Fazle Rahman <fazle@hashnode.com>, Alkshendra Maurya <alkshendra@hashnode.com>",
+  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.4.5",
     "body-parser": "^1.14.2",
@@ -32,9 +42,12 @@
     "react-redux": "^4.1.2",
     "react-router": "^2.0.0-rc5",
     "redux": "^3.1.5",
+    "redux-router": "^1.0.0-beta7",
     "redux-thunk": "^1.0.3",
     "sanitize-html": "^1.11.3",
-    "slug": "^0.9.1"
+    "slug": "^0.9.1",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5"
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0-beta6",

@@ -25,6 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (process.env.CLIENT) {
+
   render(
     <Provider store={store} key="provider">
       <div>

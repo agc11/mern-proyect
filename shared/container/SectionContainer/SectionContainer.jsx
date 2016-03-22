@@ -1,77 +1,82 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
-import Section from '../../components/Section.jsx'
+import Section from '../../components/Section.jsx';
 import Header from '../../components/Header.jsx';
 
 class SectionContainer extends Component {
   constructor(props, context) {
     super(props, context);
-    const { lists } = props;
-    this.state = { lists };
+    const { articles } = props;
+    this.state = { articles };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { lists } = nextProps;
-    this.setState({ lists });
+    this.setState({articles: nextProps.articles});
   }
 
   componentDidMount() {
-    this.props.fetchLists();
-    socket.on('new:list', function(list){
-      this.setState({ list: this.state.list.concat(list) });
-    });
+    socket.on('new:article', this._addArticle.bind(this));
+    socket.on('delete:article', this._removeArticle.bind(this));
   }
 
-  deleteList(idList) {
-    this.props.removeList(idList);
+  _addArticle(newArticle) {
+    this.setState({ articles: [newArticle].concat(this.state.articles)});
   }
 
-  addList(title, content, theme) {
-    this.props.addListRequest(title, content, theme);
+  _removeArticle(removedArticle) {
+    this.setState({ articles: this.state.articles.filter(article => article._id!== removedArticle._id) });
+  }
+
+  deleteArticle(idArticle) {
+    this.props.removeArticle(idArticle);
+  }
+
+  addArticle(title, content, theme) {
+    this.props.addArticleRequest(title, content, theme);
   }
 
   render() {
-
+    const { addArticleRequest, fetchArticles, removeArticle } = this.props;
     return (
       <div>
         <Header />
         <div>
-          <Section lists={this.state.lists} deleteList={this.props.removeList} addList={this.props.addListRequest} />
+          <Section articles={this.state.articles} deleteArticle={removeArticle} addArticle={addArticleRequest} />
         </div>
       </div>
     );
   }
 }
 
-SectionContainer.need = [() => { return Actions.fetchLists(); }];
+SectionContainer.need = [() => { return Actions.fetchArticles(); }];
 SectionContainer.contextTypes = {
   router: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
-    lists: state.lists
+    articles: state.articles
   };
 }
 
 function mapActionsToProps(dispatch) {
   return {
-    addListRequest: (title, content, theme) => dispatch(Actions.addListRequest(title, content, theme)),
-    fetchLists: () => dispatch(Actions.fetchLists()),
-    removeList: (idList) => dispatch(Actions.removeList(idList))
+    addArticleRequest: (title, content, theme) => dispatch(Actions.addArticleRequest(title, content, theme)),
+    fetchArticles: () => dispatch(Actions.fetchArticles()),
+    removeArticle: (idArticle) => dispatch(Actions.removeArticle(idArticle))
   };
 }
 
 SectionContainer.propTypes = {
-  lists: PropTypes.array.isRequired,
-  addListRequest: PropTypes.func.isRequired,
-  removeList: PropTypes.func.isRequired,
-  fetchLists: PropTypes.func.isRequired
+  articles: PropTypes.array.isRequired,
+  addArticleRequest: PropTypes.func.isRequired,
+  removeArticle: PropTypes.func.isRequired,
+  fetchArticles: PropTypes.func.isRequired
 };
 
 SectionContainer.defaultProps = {
-  lists: []
+  articles: []
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(SectionContainer);

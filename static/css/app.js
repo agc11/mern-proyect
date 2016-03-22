@@ -7,21 +7,38 @@ const {width, height, scale} = Dimensions.get("window"),
 
 export default StyleSheet.create({
     "header": {
-        "display": "flex",
-        "flexFlow": "row nowrap",
         "backgroundColor": "#eee",
         "backgroundImage": "url('/img/oie_2103621IzOaPHTD.jpg')",
         "backgroundPosition": "center",
-        "backgroundSize": "cover",
+        "backgroundSize": "100% 100%",
         "borderBottom": "1 solid #ccc",
-        "height": 300,
-        "justifyContent": "center"
+        "width": "100%",
+        "height": 270,
+        "backgroundRepeat": "no-repeat"
     },
-    "header > a": {
-        "fontSize": 20,
-        "textTransform": "uppercase",
-        "alignSelf": "center",
-        "textDecoration": "none",
-        "color": "#A01319"
+    "article-header": {
+        "display": "flex",
+        "alignItems": "baseline"
+    },
+    "article-title": {
+        "fontSize": 22,
+        "marginRight": 22
+    },
+    "article-theme": {},
+    "button-like": {
+        "fontSize": "20 !important",
+        "marginRight": "22 !important"
+    },
+    "button-like:hover": {
+        "color": "green"
+    },
+    "button-dislike": {
+        "fontSize": "20 !important"
+    },
+    "button-dislike:hover": {
+        "color": "red"
+    },
+    "form-article": {
+        "marginBottom": 100
     }
 });

@@ -2,10 +2,10 @@ import * as ActionTypes from '../constants/constants';
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-    case ActionTypes.SET_LISTS:
-      return action.lists.slice();
-    case ActionTypes.ADD_LIST:
-      return state.concat(action.list);
+    case ActionTypes.SET_ARTICLES:
+      return action.articles.slice();
+    case ActionTypes.ADD_ARTICLE:
+      return state.concat(action.article);
     default:
       return state;
   }

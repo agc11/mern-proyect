@@ -28,7 +28,7 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
-import lists from './routes/lists.routes';
+import articles from './routes/articles.routes';
 import exampleData from './exampleData';
 import serverConfig from './config';
 
@@ -47,7 +47,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', lists);
+app.use('/api', articles);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -59,11 +59,11 @@ const renderFullPage = (html, initialState) => {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>MERN Starter - Blog App</title>
+        <title>Thinks & Writes</title>
         <link rel="stylesheet" href=${cssPath} />
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
-        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
-      </head>
+        <link rel="shortcut icon" href="/img/oie_2103621IzOaPHTD.jpg" type="image/png" />
+    </head>
       <body>
         <div id="root">${html}</div>
         <script>
@@ -71,8 +71,9 @@ const renderFullPage = (html, initialState) => {
         </script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-          var socket = io();
+          const socket = io();
         </script>
+
         <script src="/dist/bundle.js"></script>
       </body>
     </html>
@@ -125,8 +126,11 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-  socket.on('new:list', function(list){
-    io.emit('new:list', list);
+  socket.on('new:article', function(article){
+    io.emit('new:article', article);
+  });
+  socket.on('delete:article', function(article){
+    io.emit('delete:article', article);
   });
 });
 

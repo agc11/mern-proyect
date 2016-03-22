@@ -1,10 +1,11 @@
 var webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
 
   entry: ['webpack-hot-middleware/client',
-          './client/index.js',
+          './client/index.js', 'bootstrap-loader',
   ],
 
   output: {
@@ -23,6 +24,10 @@ module.exports = {
         test: /\.css$/,
         loader: 'style!css?modules',
       },
+      { test: /vendor\/.+\.(jsx|js)$/,
+        loader: 'imports?jQuery=jquery,$=jquery,this=>window'
+      },
+      { test: /jquery[\\\/]src[\\\/]selector\.js$/, loader: 'amd-define-factory-patcher-loader' },
       {
         test: /\.jsx*$/,
         exclude: [/node_modules/, /.+\.config.js/],
@@ -30,6 +35,36 @@ module.exports = {
         query: {
           presets: ['react-hmre'],
         },
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel'],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]',
+          'postcss',
+        ],
+      },
+      {
+        test: /\.scss$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=2&localIdentName=[name]__[local]__[hash:base64:5]',
+          'postcss',
+          'sass',
+        ],
+      },
+      {
+        test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url?limit=10000"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
+        loader: 'file'
       },
     ],
   },
@@ -40,6 +75,12 @@ module.exports = {
       'process.env': {
         CLIENT: JSON.stringify(true)
       }
+    }),
+    new webpack.ProvidePlugin({
+      $:      "jquery",
+      jQuery: "jquery"
     })
   ],
+
+  postcss: [autoprefixer],
 };

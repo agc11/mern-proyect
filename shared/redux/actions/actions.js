@@ -3,28 +3,28 @@ import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8888)}`) : '';
 
-export function fetchLists() {
+export function fetchArticles() {
   return (dispatch) => {
-    return fetch(`${baseURL}/api/getLists`).
+    return fetch(`${baseURL}/api/getArticles`).
       then((response) => response.json()).
-      then((response) => dispatch(setLists(response.lists)));
+      then((response) => dispatch(setArticles(response.articles)));
   };
 }
 
-export function setLists(lists) {
+export function setArticles(articles) {
   return {
-    type: ActionTypes.SET_LISTS,
-    lists
+    type: ActionTypes.SET_ARTICLES,
+    articles
   };
 }
 
 
-export function addListRequest(title, content, theme) {
+export function addArticleRequest(title, content, theme) {
   return (dispatch) => {
-    fetch(`${baseURL}/api/addList`, {
+    fetch(`${baseURL}/api/addArticle`, {
       method: 'post',
       body: JSON.stringify({
-        list: {
+        article: {
           title: title,
           content: content,
           theme: theme
@@ -33,24 +33,23 @@ export function addListRequest(title, content, theme) {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then(res => dispatch(addList(res.list)));
+    }).then((res) => res.json()).then(res => socket.emit('new:article', res.article));
   };
 }
 
-export function addList(list) {
-  debugger;
+export function addArticle(article) {
   return {
-    type: ActionTypes.ADD_LIST,
-    list: list
+    type: ActionTypes.ADD_ARTICLE,
+    article: article
   };
 }
 
-export function editList(idList, title, content, theme) {
-  fetch(`${baseURL}/api/editList`, {
+export function editArticle(idArticle, title, content, theme) {
+  fetch(`${baseURL}/api/editArticle`, {
     method: 'post',
     body: JSON.stringify({
-      list: {
-        idList: idList,
+      article: {
+        idArticle: idArticle,
         title: title,
         content: content,
         theme: theme
@@ -62,14 +61,14 @@ export function editList(idList, title, content, theme) {
   });
 }
 
-export function removeList(idList) {
-  fetch(`${baseURL}/api/removeList`, {
+export function removeArticle(idArticle) {
+  fetch(`${baseURL}/api/removeArticle`, {
       method: 'post',
       body: JSON.stringify({
-        idList: idList
+        idArticle: idArticle
       }),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    });
+    }).then((res) => res.json()).then( res => socket.emit('delete:article', res.article));
 }

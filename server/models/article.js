@@ -3,7 +3,7 @@ import cuid from 'cuid';
 
 const Schema = mongoose.Schema;
 
-const listSchema = new Schema({
+const articleSchema = new Schema({
   title: { type: 'String', required: true },
   content: { type: 'String', required: true },
   theme: { type: 'String', enum: [ "Politics", "Science", "Technology", "Funny", "Poetry", "Travel" ], required: true },
@@ -12,7 +12,7 @@ const listSchema = new Schema({
   author: { type: 'String', default: 'My' },
   slug: { type: 'String', required: true },
   cuid: { type: 'String', default: cuid(), required: true },
-  dateAdded: { type: 'Date', default: Date.now, required: true }
+  dateAdded: { type: 'Date', default: Date.now, required: true },
 });
 
-export default mongoose.model('List', listSchema);
+export default mongoose.model('Article', articleSchema);

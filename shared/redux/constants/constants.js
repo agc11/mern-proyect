@@ -1,4 +1,4 @@
-export const SET_LISTS = 'SET_LISTS';
-export const REMOVE_LISTS = 'REMOVE_LISTS';
-export const EDIT_LISTS = 'EDIT_LISTS';
-export const ADD_LIST = 'ADD_LIST';
+export const SET_ARTICLES = 'SET_ARTICLES';
+export const REMOVE_ARTICLE = 'REMOVE_ARTICLE';
+export const EDIT_ARTICLE = 'EDIT_ARTICLE';
+export const ADD_ARTICLE = 'ADD_ARTICLE';

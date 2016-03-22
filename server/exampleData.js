@@ -1,7 +1,7 @@
-import List from './models/list';
+import Article from './models/article';
 
 export default function () {
-  List.count().exec((err, count) => {
+  Article.count().exec((err, count) => {
     if (count > 0) {
       return;
     }
@@ -10,10 +10,10 @@ export default function () {
 
     const content2 = `test2`;
 
-    const list1 = new List({ title: 'Hello Worl', slug: 'hello-worl', cuid: 'cikqgkv4q01ck7453ualdn3hd', content: content1 });
-    const list2 = new List({ title: 'By Worl', slug: 'by-worl', cuid: 'cikqgkv4q01ck7453ualdn3hf', content: content2 });
+    const article1 = new Article({ title: 'Hello Worl', slug: 'hello-worl', cuid: 'cikqgkv4q01ck7453ualdn3hd', content: content1 });
+    const article2 = new Article({ title: 'By Worl', slug: 'by-worl', cuid: 'cikqgkv4q01ck7453ualdn3hf', content: content2 });
 
-    List.create([list1, list2], (error) => {
+    Article.create([article1, article2], (error) => {
       if (!error) {
         // console.log('ready to go....');
       }

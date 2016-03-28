@@ -20,20 +20,25 @@ export function setArticles(articles) {
 
 
 export function addArticleRequest(title, content, theme) {
+  fetch(`${baseURL}/api/addArticle`, {
+    method: 'post',
+    body: JSON.stringify({
+      article: {
+        title: title,
+        content: content,
+        theme: theme
+      }
+    }),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  }).then((res) => res.json()).then(res => socket.emit('new:article', res.article));
+}
+
+
+export function addArticleLocal(article) {
   return (dispatch) => {
-    fetch(`${baseURL}/api/addArticle`, {
-      method: 'post',
-      body: JSON.stringify({
-        article: {
-          title: title,
-          content: content,
-          theme: theme
-        }
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then(res => socket.emit('new:article', res.article));
+    dispatch(addArticle(article));
   };
 }
 
@@ -61,7 +66,8 @@ export function editArticle(idArticle, title, content, theme) {
   });
 }
 
-export function removeArticle(idArticle) {
+export function removeArticleRequest(idArticle) {
+
   fetch(`${baseURL}/api/removeArticle`, {
       method: 'post',
       body: JSON.stringify({
@@ -71,4 +77,17 @@ export function removeArticle(idArticle) {
         'Content-Type': 'application/json'
       })
     }).then((res) => res.json()).then( res => socket.emit('delete:article', res.article));
+}
+
+export function removeArticleLocal(article) {
+  return (dispatch) => {
+    dispatch(removeArticle(article));
+  };
+}
+
+export function removeArticle(article) {
+  return {
+    type: ActionTypes.REMOVE_ARTICLE,
+    article: article
+  };
 }

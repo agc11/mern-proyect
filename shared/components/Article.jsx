@@ -6,7 +6,11 @@ export default class Article extends Component {
     super(props);
   }
 
-  generateLi(article, index) {
+  handleClickButton(idArticle) {
+    this.props.deleteArticle(idArticle);
+  }
+
+  generateArticle(article, index) {
     return (
       <div className="panel panel-default" key={index}>
         <div className="panel-heading article-header">
@@ -24,16 +28,14 @@ export default class Article extends Component {
       </div>);
   }
 
-  handleClickButton(idArticle) {
-    this.props.deleteArticle(idArticle);
-  }
+
 
   render() {
     const { articles } = this.props;
     return (
       <div>
           {
-            articles.map( (article, index) => this.generateLi(article, index))
+            articles.map( (article, index) => this.generateArticle(article, index))
           }
       </div>
     );

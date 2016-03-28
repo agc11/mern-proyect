@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
 import Section from '../../components/Section.jsx';
-import Header from '../../components/Header.jsx';
+
 
 class SectionContainer extends Component {
   constructor(props, context) {
@@ -20,30 +20,24 @@ class SectionContainer extends Component {
     socket.on('delete:article', this._removeArticle.bind(this));
   }
 
+  componentWillUnmount() {
+    socket.removeListener('new:article');
+    socket.removeListener('delete:article');
+  }
+
   _addArticle(newArticle) {
-    this.setState({ articles: [newArticle].concat(this.state.articles)});
+    this.props.addArticleLocal(newArticle);
   }
 
   _removeArticle(removedArticle) {
-    this.setState({ articles: this.state.articles.filter(article => article._id!== removedArticle._id) });
-  }
-
-  deleteArticle(idArticle) {
-    this.props.removeArticle(idArticle);
-  }
-
-  addArticle(title, content, theme) {
-    this.props.addArticleRequest(title, content, theme);
+    this.props.removeArticleLocal(removedArticle);
   }
 
   render() {
-    const { addArticleRequest, fetchArticles, removeArticle } = this.props;
+    const { addArticleRequest, fetchArticles, removeArticleRequest } = this.props;
     return (
       <div>
-        <Header />
-        <div>
-          <Section articles={this.state.articles} deleteArticle={removeArticle} addArticle={addArticleRequest} />
-        </div>
+        <Section articles={this.state.articles} deleteArticle={removeArticleRequest} addArticle={addArticleRequest} />
       </div>
     );
   }
@@ -54,6 +48,7 @@ SectionContainer.contextTypes = {
   router: React.PropTypes.object,
 };
 
+
 function mapStateToProps(state) {
   return {
     articles: state.articles
@@ -62,17 +57,21 @@ function mapStateToProps(state) {
 
 function mapActionsToProps(dispatch) {
   return {
-    addArticleRequest: (title, content, theme) => dispatch(Actions.addArticleRequest(title, content, theme)),
+    addArticleRequest: (title, content, theme) => Actions.addArticleRequest(title, content, theme),
     fetchArticles: () => dispatch(Actions.fetchArticles()),
-    removeArticle: (idArticle) => dispatch(Actions.removeArticle(idArticle))
+    removeArticleRequest: (idArticle) => Actions.removeArticleRequest(idArticle),
+    addArticleLocal: (article) => dispatch(Actions.addArticleLocal(article)),
+    removeArticleLocal: (article) => dispatch(Actions.removeArticleLocal(article))
   };
 }
 
 SectionContainer.propTypes = {
   articles: PropTypes.array.isRequired,
   addArticleRequest: PropTypes.func.isRequired,
-  removeArticle: PropTypes.func.isRequired,
-  fetchArticles: PropTypes.func.isRequired
+  removeArticleRequest: PropTypes.func.isRequired,
+  fetchArticles: PropTypes.func.isRequired,
+  addArticleLocal: PropTypes.func.isRequired,
+  removeArticleLocal: PropTypes.func.isRequired
 };
 
 SectionContainer.defaultProps = {

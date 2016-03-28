@@ -8,14 +8,6 @@ export default class Section extends Component {
     super(props);
   }
 
-  handleOnClickAddArticle() {
-    const { addArticle } = this.props;
-    const title = this.refs.title.value;
-    const content = this.refs.content.value;
-    const theme = this.refs.theme.value;
-    addArticle(title, content, theme);
-  }
-
   render() {
     const { articles, deleteArticle, addArticle } = this.props;
     return (

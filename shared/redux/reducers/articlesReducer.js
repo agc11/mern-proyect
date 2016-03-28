@@ -5,7 +5,9 @@ const reducer = (state = [], action) => {
     case ActionTypes.SET_ARTICLES:
       return action.articles.slice();
     case ActionTypes.ADD_ARTICLE:
-      return state.concat(action.article);
+      return [action.article].concat(state);
+    case ActionTypes.REMOVE_ARTICLE:
+      return state.filter(article => article._id !== action.article._id);
     default:
       return state;
   }

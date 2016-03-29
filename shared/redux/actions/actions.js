@@ -91,3 +91,17 @@ export function removeArticle(article) {
     article: article
   };
 }
+
+export function changeNewTheme(newTheme) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/newTheme`, {
+      method: 'post',
+      body: JSON.stringify({
+        theme: newTheme
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then( response => response.json()).then( response => dispatch(setArticles(response.articles)));
+  };
+}

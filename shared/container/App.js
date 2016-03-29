@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/actions';
-import Header from '../components/Header.jsx';
+import HeaderContainer from './HeaderContainer/HeaderContainer.jsx';
 
 class App extends Component {
   constructor(props, context) {
@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <HeaderContainer />
         { this.props.children }
       </div>
     );

@@ -2,9 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import themesTypes from '../utils/themes.value.js';
 
-export default class Section extends Component {
+export default class Header extends Component {
   constructor(props) {
     super(props);
+  }
+
+  handleOnClickTheme(theme) {
+    this.props.SearchTheme(theme);
   }
 
   render() {
@@ -27,10 +31,11 @@ export default class Section extends Component {
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Themes <span className="caret"></span></a>
                     <ul className="dropdown-menu">
-                      <li><a href="#">All</a></li>
+                      <li onClick={() => this.handleOnClickTheme('All')}><a href="#">All</a></li>
                       <li role="separator" className="divider"></li>
                       {
-                        themesTypes.map( (theme, i) => <li key={i}><a href="#">{theme}</a></li>)
+                        themesTypes.map( (theme, i) =>
+                          <li key={i} onClick={() => this.handleOnClickTheme(theme)}><a href="#">{theme}</a></li>)
                       }
                     </ul>
                   </li>
@@ -50,4 +55,8 @@ export default class Section extends Component {
           </div>
     );
   }
+}
+
+Header.propTypes = {
+  SearchTheme: PropTypes.func.isRequired
 }

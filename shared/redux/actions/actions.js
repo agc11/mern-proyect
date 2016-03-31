@@ -18,6 +18,19 @@ export function setArticles(articles) {
   };
 }
 
+export function register(username, password, email) {
+  fetch(`${baseURL}/users/register`, {
+    method: 'post',
+    body: JSON.stringify({
+      username: username,
+      password: password,
+      email: email,
+    }),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    })
+  }).then( res => res.json()).then( res => console.log(res.msg));
+}
 
 export function addArticleRequest(title, content, theme) {
   fetch(`${baseURL}/api/addArticle`, {

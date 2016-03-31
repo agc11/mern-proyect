@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
-import cuid from 'cuid';
-
+var passportLocalMongoose = require('passport-local-mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  name: { type: 'String', required: true },
-  email: { type: 'String', required: true },
-  password: { type: 'String', required: true },
-  dateAdded: { type: 'Date', default: Date.now, required: true },
+  username: { type: 'String' },
+  email: { type: 'String' },
+  password: { type: 'String' },
 });
 
-export default moongose.model('User', UserSchema)
+UserSchema.plugin(passportLocalMongoose);
+
+export default mongoose.model('User', UserSchema)

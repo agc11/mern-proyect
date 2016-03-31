@@ -29,6 +29,7 @@ import { match, RouterContext } from 'react-router';
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
 import articles from './routes/articles.routes';
+import users from './routes/users.routes';
 import exampleData from './exampleData';
 import serverConfig from './config';
 
@@ -47,8 +48,20 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', articles);
 
+// passport config
+import User from './models/user';
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+app.use(passport.initialize());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+//routes
+app.use('/api', articles);
+app.use('/users', users)
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';

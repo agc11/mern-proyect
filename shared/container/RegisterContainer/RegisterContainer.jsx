@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
-import { Link } from 'react-router';
 
-class LoginContainer extends Component {
+
+class RegisterContainer extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -12,13 +12,15 @@ class LoginContainer extends Component {
   clearInputs() {
     this.refs.username.value = '';
     this.refs.password.value = '';
+    this.refs.email.value = '';
   }
 
   submitUser(){
     const username = this.refs.username.value;
     const password = this.refs.password.value;
+    const email = this.refs.email.value;
     this.clearInputs();
-    this.props.login(username, password);
+    this.props.register(username, password, email);
   }
 
   render() {
@@ -29,11 +31,14 @@ class LoginContainer extends Component {
           <input ref="username" type="text" className="form-control" name="username" id="username" placeholder="username" />
         </div>
         <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input ref="email" type="text" className="form-control" name="email" id="email" placeholder="email" />
+        </div>
+        <div className="form-group">
           <label htmlFor="password">Password</label>
           <input ref="password" type="password" className="form-control" name="password" id="password" placeholder="Password" />
         </div>
         <button onClick={() => this.submitUser()} className="btn btn-default">Submit</button>
-        <Link to='/register'>Register</Link>
       </div>
     );
   }
@@ -47,17 +52,17 @@ function mapStateToProps(state) {
 
 function mapActionsToProps(dispatch) {
   return {
-    login: (username, password) => dispatch(Actions.login(username, password)),
+    register: (username, password, email) => Actions.register(username, password, email),
   };
 }
 
-LoginContainer.propTypes = {
+RegisterContainer.propTypes = {
   articles: PropTypes.array.isRequired,
-  login: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
-LoginContainer.defaultProps = {
+RegisterContainer.defaultProps = {
   articles: []
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(LoginContainer);
+export default connect(mapStateToProps, mapActionsToProps)(RegisterContainer);

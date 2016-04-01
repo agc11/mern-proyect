@@ -18,6 +18,31 @@ export function setArticles(articles) {
   };
 }
 
+export function login(username, password) {
+  return (dispatch) => {
+    fetch(`${baseURL}/users/login`, {
+      method: 'post',
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      })
+    }).then( res => res.json()).then( res => dispatch(loginLocal(res)));
+  };
+}
+
+function loginLocal(res) {
+  if (res.user && res.token) {
+    return {
+      type: ActionTypes.LOGIN,
+      user: res.user,
+      token: res.token
+    }
+  }
+}
+
 export function register(username, password, email) {
   fetch(`${baseURL}/users/register`, {
     method: 'post',

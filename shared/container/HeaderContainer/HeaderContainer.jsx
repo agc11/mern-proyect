@@ -4,13 +4,14 @@ import Header from '../../components/Header.jsx';
 
 function mapStateToProps(state) {
   return {
-    articles: state.articles
+    user: state.user
   };
 }
 
 function mapActionsToProps(dispatch) {
   return {
-    SearchTheme: (newTheme) => dispatch(Actions.changeNewTheme(newTheme))
+    SearchTheme: (newTheme, user) => dispatch(Actions.changeNewTheme(newTheme, user)),
+    LogOut: () => dispatch(Actions.logOutRequest())
   };
 }
 

@@ -9,7 +9,8 @@ const routes = (
   <Route path="/" component={App} >
     <Route path="login" component={LoginContainer} />
     <Route path="register" component={RegisterContainer} />
-    <IndexRoute component={SectionContainer} />
+    <Route path="main" component={SectionContainer} />
+    <IndexRoute component={LoginContainer} />
   </Route>
 );
 

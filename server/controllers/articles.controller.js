@@ -11,10 +11,6 @@ const checkArticle = function(res, article, themes) {
   }
 };
 
-const checkTheme = function(res, theme) {
-  if ( !theme || themes.indexOf(theme)===-1) return res.status(403).end();
-}
-
 const sanitizeNewArticle = function(article) {
   const newArticle = new Article(article);
   newArticle.title = sanitizeHtml(newArticle.title);
@@ -24,6 +20,10 @@ const sanitizeNewArticle = function(article) {
   newArticle.slug = slug(newArticle.title.toLowerCase(), { lowercase: true });
   return newArticle;
 };
+
+const isInTheArray = function(arr, string) {
+  return arr.indexOf(string) !== -1;
+}
 
 export function getArticles(req, res) {
   Article.find().sort('-dateAdded').exec((err, articles) => {
@@ -35,7 +35,9 @@ export function getArticles(req, res) {
 }
 
 export function addArticle(req, res) {
-  checkArticle(res, req.body.article, themes);
+  if(!isInTheArray(themes, req.body.article.theme)) {
+     return res.status(403).end()
+  }
   new Promise(resolve => {
     resolve(sanitizeNewArticle(req.body.article));
   }).then(newArticle => {
@@ -50,8 +52,9 @@ export function addArticle(req, res) {
 
 export function removeArticle(req, res) {
   const idArticle = req.body.idArticle;
+  const user = req.body.user;
   Article.findById(idArticle).exec((err, articleSelected) => {
-    if (err) {
+    if (err || articleSelected.author !== user.username) {
       return res.status(500).send(err);
     }
     articleSelected.remove( () => {
@@ -85,4 +88,18 @@ export function editArticle(req, res) {
     "title": newTitle, "content": newContent, "theme": newTheme}, function(err) {
       return !err ? res.status(200).end() : res.status(500).send(err);
   });
+}
+
+export function voteArticle(req, res) {
+  const article = req.body.article;
+  const user = req.body.user.user;
+  const vote = req.body.vote;
+  if(isInTheArray(article.usersWhoVoted, user.username)) {
+    return res.status(403).end();
+  }
+  Article.findByIdAndUpdate(article._id, { $inc: { [vote]: 1 }, $addToSet: { "usersWhoVoted": user.username } },
+    function (err, article) {
+      return !err ? res.status(200).json({article: article}) : res.status(500).send(err);
+    }
+  );
 }

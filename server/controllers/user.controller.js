@@ -33,5 +33,13 @@ export function login(req, res, next) {
         token: token,
       });
     });
-  })(req,res,next);
+  })(req, res,next);
+}
+
+
+export function logOut(req, res) {
+  req.logout();
+  res.status(200).json({
+    msg: 'LogOut Successful!',
+  });
 }

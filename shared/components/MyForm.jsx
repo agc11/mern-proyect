@@ -8,12 +8,12 @@ export default class MyForm extends Component {
   }
 
   handleOnClickAddArticle() {
-    const { addArticle } = this.props;
+    const { addArticle, user } = this.props;
     const title = this.refs.title.value;
     const content = this.refs.content.value;
     const theme = this.refs.theme.value;
     this.resetForm();
-    addArticle(title, content, theme);
+    addArticle(title, content, theme, user);
   }
 
   resetForm() {
@@ -60,5 +60,10 @@ export default class MyForm extends Component {
 }
 
 MyForm.propTypes = {
+  user: PropTypes.object.isRequired,
   addArticle: PropTypes.func.isRequired,
+};
+
+MyForm.defaultProps = {
+  user: {}
 };

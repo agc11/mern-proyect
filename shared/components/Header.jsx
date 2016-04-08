@@ -8,7 +8,12 @@ export default class Header extends Component {
   }
 
   handleOnClickTheme(theme) {
-    this.props.SearchTheme(theme);
+    const { user, SearchTheme } = this.props;
+    SearchTheme(theme, user);
+  }
+
+  handleOnClickLogOut() {
+    this.props.LogOut();
   }
 
   render() {
@@ -24,7 +29,7 @@ export default class Header extends Component {
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <Link to="/" className="navbar-brand">Thinks & Writes</Link>
+                <Link to="/main" className="navbar-brand">Thinks & Writes</Link>
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
@@ -47,7 +52,7 @@ export default class Header extends Component {
                   <button type="submit" className="btn btn-default">Search</button>
                 </form>
                 <ul className="nav navbar-nav pull-right">
-                  <li className="active"><a  href="#">Login</a></li>
+                  <li className="active" onClick={() => this.handleOnClickLogOut()}><a  href="#">LogOut</a></li>
                 </ul>
               </div>
             </div>
@@ -58,5 +63,7 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
-  SearchTheme: PropTypes.func.isRequired
+  SearchTheme: PropTypes.func.isRequired,
+  LogOut: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }

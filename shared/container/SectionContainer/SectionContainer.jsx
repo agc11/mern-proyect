@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
 import Section from '../../components/Section.jsx';
-
+import HeaderContainer from '../HeaderContainer/HeaderContainer.jsx';
+import { browserHistory } from 'react-router';
 
 class SectionContainer extends Component {
   constructor(props, context) {
@@ -13,6 +14,11 @@ class SectionContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({articles: nextProps.articles});
+  }
+
+  componentWillMount() {
+    const { articles, user } = this.props;
+    if(user.token) this.props.fetchArticles(user);
   }
 
   componentDidMount() {
@@ -34,10 +40,14 @@ class SectionContainer extends Component {
   }
 
   render() {
-    const { addArticleRequest, fetchArticles, removeArticleRequest } = this.props;
+    const { addArticleRequest, fetchArticles, removeArticleRequest, voteArticleRequest, articles, user } = this.props;
+    if(!user.token && !user.user) {
+      browserHistory.push('/login');
+    }
     return (
       <div>
-        <Section articles={this.state.articles} deleteArticle={removeArticleRequest} addArticle={addArticleRequest} />
+        <HeaderContainer />
+        <Section articles={articles} user={user} voteArticle={voteArticleRequest} deleteArticle={removeArticleRequest} addArticle={addArticleRequest} />
       </div>
     );
   }
@@ -51,31 +61,36 @@ SectionContainer.contextTypes = {
 
 function mapStateToProps(state) {
   return {
-    articles: state.articles
+    articles: state.articles,
+    user: state.user
   };
 }
 
 function mapActionsToProps(dispatch) {
   return {
-    addArticleRequest: (title, content, theme) => Actions.addArticleRequest(title, content, theme),
-    fetchArticles: () => dispatch(Actions.fetchArticles()),
-    removeArticleRequest: (idArticle) => Actions.removeArticleRequest(idArticle),
-    addArticleLocal: (article) => dispatch(Actions.addArticleLocal(article)),
-    removeArticleLocal: (article) => dispatch(Actions.removeArticleLocal(article))
+    addArticleRequest: (title, content, theme, user) => Actions.addArticleRequest(title, content, theme, user),
+    fetchArticles: (user) => dispatch(Actions.fetchArticles(user)),
+    removeArticleRequest: (idArticle, user) => Actions.removeArticleRequest(idArticle, user),
+    addArticleLocal: (article, user) => dispatch(Actions.addArticleLocal(article)),
+    removeArticleLocal: (article) => dispatch(Actions.removeArticleLocal(article)),
+    voteArticleRequest: (article, user, vote) => dispatch(Actions.voteArticleRequest(article, user, vote))
   };
 }
 
 SectionContainer.propTypes = {
   articles: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
   addArticleRequest: PropTypes.func.isRequired,
   removeArticleRequest: PropTypes.func.isRequired,
   fetchArticles: PropTypes.func.isRequired,
   addArticleLocal: PropTypes.func.isRequired,
-  removeArticleLocal: PropTypes.func.isRequired
+  removeArticleLocal: PropTypes.func.isRequired,
+  voteArticleRequest: PropTypes.func.isRequired,
 };
 
 SectionContainer.defaultProps = {
-  articles: []
+  articles: [],
+  user: {}
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(SectionContainer);

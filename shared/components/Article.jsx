@@ -7,10 +7,17 @@ export default class Article extends Component {
   }
 
   handleClickButton(idArticle) {
-    this.props.deleteArticle(idArticle);
+    const { deleteArticle, user } = this.props;
+    deleteArticle(idArticle, user);
+  }
+
+  handleOnClickVote(article, vote) {
+    const { user, voteArticle } = this.props;
+    voteArticle(article, user, vote);
   }
 
   generateArticle(article, index) {
+    const { user } = this.props;
     return (
       <div className="panel panel-default" key={index}>
         <div className="panel-heading article-header">
@@ -20,18 +27,22 @@ export default class Article extends Component {
         <div className="panel-body">{article.content}</div>
         <div className="panel-footer">{`Author: ${article.author} ~ Date: ${article.dateAdded}`}
           <div className="article-votes">
-            <span className="glyphicon glyphicon-thumbs-up button-like">{`${article.likes}`}</span>
-            <span className="glyphicon glyphicon-thumbs-down button-dislike">{`${article.dislikes}`}</span>
+            <span onClick={() => this.handleOnClickVote(article, 'likes')} className="glyphicon glyphicon-thumbs-up button-like">{`${article.likes}`}</span>
+            <span onClick={() => this.handleOnClickVote(article, 'dislikes')} className="glyphicon glyphicon-thumbs-down button-dislike">{`${article.dislikes}`}</span>
           </div>
         </div>
-        <button className="btn btn-default" onClick={() => this.handleClickButton(article._id)}>Remove</button>
+        {
+          user.user.username !== article.author
+            ? ''
+            : <button className="btn btn-default" onClick={() => this.handleClickButton(article._id)}>Remove</button>
+        }
       </div>);
   }
 
 
 
   render() {
-    const { articles } = this.props;
+    const { articles, user } = this.props;
     return (
       <div>
           {
@@ -44,8 +55,11 @@ export default class Article extends Component {
 
 Article.propTypes = {
   articles: PropTypes.array.isRequired,
-  deleteArticle: PropTypes.func.isRequired
+  user: PropTypes.object.isRequired,
+  deleteArticle: PropTypes.func.isRequired,
+  voteArticle: PropTypes.func.isRequired,
 };
 Article.defaultProps = {
-  articles: []
+  articles: [],
+  user: {}
 };

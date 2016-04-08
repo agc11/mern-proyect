@@ -9,11 +9,11 @@ export default class Section extends Component {
   }
 
   render() {
-    const { articles, deleteArticle, addArticle } = this.props;
+    const { articles, deleteArticle, addArticle, user, voteArticle } = this.props;
     return (
       <div>
-        <Article articles={articles} deleteArticle={deleteArticle} />
-        <MyForm addArticle= {addArticle}/>
+        <Article articles={articles} deleteArticle={deleteArticle} user={user} voteArticle={voteArticle} />
+        <MyForm addArticle= {addArticle} user={user}/>
       </div>
     );
   }
@@ -21,9 +21,12 @@ export default class Section extends Component {
 
 Section.propTypes = {
   articles: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
   deleteArticle: PropTypes.func.isRequired,
-  addArticle: PropTypes.func.isRequired
+  addArticle: PropTypes.func.isRequired,
+  voteArticle: PropTypes.func.isRequired,
 };
 Section.defaultProps = {
-  articles: []
+  articles: [],
+  user: {}
 };

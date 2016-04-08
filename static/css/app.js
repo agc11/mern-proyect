@@ -27,13 +27,15 @@ export default StyleSheet.create({
     "article-theme": {},
     "button-like": {
         "fontSize": "20 !important",
-        "marginRight": "22 !important"
+        "marginRight": "22 !important",
+        "cursor": "pointer"
     },
     "button-like:hover": {
         "color": "green"
     },
     "button-dislike": {
-        "fontSize": "20 !important"
+        "fontSize": "20 !important",
+        "cursor": "pointer"
     },
     "button-dislike:hover": {
         "color": "red"

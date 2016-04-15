@@ -29,7 +29,7 @@ export default class Header extends Component {
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <Link to="/main" className="navbar-brand">Thinks & Writes</Link>
+                <Link to="/main" className="navbar-brand">Think & Write</Link>
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">

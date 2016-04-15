@@ -97,9 +97,9 @@ export function voteArticle(req, res) {
   if(isInTheArray(article.usersWhoVoted, user.username)) {
     return res.status(403).end();
   }
-  Article.findByIdAndUpdate(article._id, { $inc: { [vote]: 1 }, $addToSet: { "usersWhoVoted": user.username } },
+  Article.findByIdAndUpdate(article._id, { $inc: { [vote]: 1 }, $addToSet: { "usersWhoVoted": user.username } }, {new: true},
     function (err, article) {
-      return !err ? res.status(200).json({article: article}) : res.status(500).send(err);
+      return !err ? res.json({article: article}) : res.status(500).send(err);
     }
   );
 }

@@ -171,8 +171,8 @@ export function logOutRequest() {
   return (dispatch) => {
     fetch(`${baseURL}/users/logout`)
     .then((response) => response.json())
-    .then(response => dispatch(logOut()))
-    .then(() => browserHistory.push('/'));
+    .then(() => browserHistory.push('/login'))
+    .then(response => dispatch(logOut()));
   };
 }
 
@@ -185,24 +185,25 @@ function logOut() {
 
 
 export function voteArticleRequest(article, user, vote) {
-  return (dispatch) => {
-    fetch(`${baseURL}/api/voteArticle`, {
-      method: 'post',
-      body: JSON.stringify({
-        article: article,
-        user: user,
-        vote: vote,
-        token: user.token,
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'x-access-token': user.token,
-      })
-    }).then( res => res.json() )
-      .then( res => dispatch(voteArticle(res)) );
-  };
+  fetch(`${baseURL}/api/voteArticle`, {
+    method: 'post',
+    body: JSON.stringify({
+      article: article,
+      user: user,
+      vote: vote,
+      token: user.token,
+    }),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'x-access-token': user.token,
+    })
+  }).then( res => res.json() )
+    .then( res => socket.emit('vote:article', res.article));
 }
 
-function voteArticle(article) {
-  debugger;
+export function voteArticleLocal(article) {
+  return {
+    type: ActionTypes.VOTE_ARTICLE,
+    article: article
+  }
 }

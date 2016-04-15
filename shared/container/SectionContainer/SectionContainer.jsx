@@ -18,17 +18,22 @@ class SectionContainer extends Component {
 
   componentWillMount() {
     const { articles, user } = this.props;
+    if(!user.token && !user.user) {
+      browserHistory.push('/login');
+    }
     if(user.token) this.props.fetchArticles(user);
   }
 
   componentDidMount() {
     socket.on('new:article', this._addArticle.bind(this));
     socket.on('delete:article', this._removeArticle.bind(this));
+    socket.on('vote:article', this._voteArticle.bind(this));
   }
 
   componentWillUnmount() {
     socket.removeListener('new:article');
     socket.removeListener('delete:article');
+    socket.removeListener('vote:article');
   }
 
   _addArticle(newArticle) {
@@ -39,11 +44,13 @@ class SectionContainer extends Component {
     this.props.removeArticleLocal(removedArticle);
   }
 
+  _voteArticle(article) {
+    this.props.voteArticleLocal(article);
+  }
+
   render() {
     const { addArticleRequest, fetchArticles, removeArticleRequest, voteArticleRequest, articles, user } = this.props;
-    if(!user.token && !user.user) {
-      browserHistory.push('/login');
-    }
+
     return (
       <div>
         <HeaderContainer />
@@ -73,7 +80,8 @@ function mapActionsToProps(dispatch) {
     removeArticleRequest: (idArticle, user) => Actions.removeArticleRequest(idArticle, user),
     addArticleLocal: (article, user) => dispatch(Actions.addArticleLocal(article)),
     removeArticleLocal: (article) => dispatch(Actions.removeArticleLocal(article)),
-    voteArticleRequest: (article, user, vote) => dispatch(Actions.voteArticleRequest(article, user, vote))
+    voteArticleRequest: (article, user, vote) => Actions.voteArticleRequest(article, user, vote),
+    voteArticleLocal: (article) => dispatch(Actions.voteArticleLocal(article))
   };
 }
 
@@ -86,6 +94,7 @@ SectionContainer.propTypes = {
   addArticleLocal: PropTypes.func.isRequired,
   removeArticleLocal: PropTypes.func.isRequired,
   voteArticleRequest: PropTypes.func.isRequired,
+  voteArticleLocal: PropTypes.func.isRequired
 };
 
 SectionContainer.defaultProps = {

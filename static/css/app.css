@@ -1,3 +1,9 @@
+.no-link-css {
+	text-decoration: none !important;
+
+}
+
+
 .header {
 	background-color: #eee;
 	background-image: url('/img/oie_2103621IzOaPHTD.jpg');
@@ -48,6 +54,43 @@
 .form-article {
   margin-bottom: 100px;
 }
+
+/* ----------- LOGIN ---------------- */
+
+.login-register {
+	min-height:100%;
+	width: 100%;
+  position:absolute;
+	background-image: url('/img/fondo.jpg');
+	background-position: center;
+	background-size: cover;
+	height: 100%;
+	padding-top: 12%;
+	padding-right: 30%;
+	padding-left: 30%;
+}
+
+.login-button {
+	margin-bottom: 20px !important;
+}
+
+.inner-addon {
+    position: relative;
+}
+
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
 /* Media query */
 
 @media (max-width: 600px) {

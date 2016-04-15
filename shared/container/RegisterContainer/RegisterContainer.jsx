@@ -25,20 +25,29 @@ class RegisterContainer extends Component {
 
   render() {
     return(
-      <div>
-        <div className="form-group">
+      <div className="login-register">
+        <div className="form-group inner-addon left-addon">
           <label htmlFor="username">User name</label>
-          <input ref="username" type="text" className="form-control" name="username" id="username" placeholder="username" />
+          <div className="inner-addon left-addon">
+            <i className="glyphicon glyphicon-user"></i>
+            <input ref="username" type="text" className="form-control" name="username" id="username" placeholder="User name" />
+          </div>
         </div>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input ref="email" type="text" className="form-control" name="email" id="email" placeholder="email" />
-        </div>
+          <div className="inner-addon left-addon">
+            <i className="glyphicon glyphicon-envelope"></i>
+            <input ref="email" type="text" className="form-control" name="email" id="email" placeholder="Email" />
+          </div>
+      </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input ref="password" type="password" className="form-control" name="password" id="password" placeholder="Password" />
+          <div className="inner-addon left-addon">
+            <i className="glyphicon glyphicon glyphicon-lock"></i>
+            <input ref="password" type="password" className="form-control" name="password" id="password" placeholder="Password" />
+          </div>
         </div>
-        <button onClick={() => this.submitUser()} className="btn btn-default">Submit</button>
+        <button onClick={() => this.submitUser()} className="btn btn-success default btn-block login-button">Register</button>
       </div>
     );
   }

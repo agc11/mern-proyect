@@ -3,12 +3,11 @@ import * as ArticleController from '../controllers/articles.controller';
 const Verify = require('../controllers/verify');
 const router = new Router();
 
-router.all('*' ,Verify.verifyOrdinaryUser);
-router.route('/getArticles').get(ArticleController.getArticles);
-router.route('/newTheme').post(ArticleController.changeNewTheme);
-router.route('/addArticle').post(ArticleController.addArticle);
-router.route('/removeArticle').post(ArticleController.removeArticle);
-router.route('/editArticle').post(ArticleController.editArticle);
-router.route('/voteArticle').post(ArticleController.voteArticle);
+router.route('/getArticles').get(Verify.verifyOrdinaryUser, ArticleController.getArticles);
+router.route('/newTheme').post(Verify.verifyOrdinaryUser, ArticleController.changeNewTheme);
+router.route('/addArticle').post(Verify.verifyOrdinaryUser, ArticleController.addArticle);
+router.route('/removeArticle').post(Verify.verifyOrdinaryUser, ArticleController.removeArticle);
+router.route('/editArticle').post(Verify.verifyOrdinaryUser, ArticleController.editArticle);
+router.route('/voteArticle').post(Verify.verifyOrdinaryUser, ArticleController.voteArticle);
 
 export default router;

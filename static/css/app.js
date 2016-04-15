@@ -6,6 +6,9 @@ const {width, height, scale} = Dimensions.get("window"),
     vmax = Math.max(vw, vh);
 
 export default StyleSheet.create({
+    "no-link-css": {
+        "textDecoration": "none !important"
+    },
     "header": {
         "backgroundColor": "#eee",
         "backgroundImage": "url('/img/oie_2103621IzOaPHTD.jpg')",
@@ -42,5 +45,43 @@ export default StyleSheet.create({
     },
     "form-article": {
         "marginBottom": 100
+    },
+    "login-register": {
+        "minHeight": "100%",
+        "width": "100%",
+        "position": "absolute",
+        "backgroundImage": "url('/img/fondo.jpg')",
+        "backgroundPosition": "center",
+        "backgroundSize": "cover",
+        "height": "100%",
+        "paddingTop": "12%",
+        "paddingRight": "30%",
+        "paddingLeft": "30%"
+    },
+    "login-button": {
+        "marginBottom": "20 !important"
+    },
+    "inner-addon": {
+        "position": "relative"
+    },
+    "inner-addon glyphicon": {
+        "position": "absolute",
+        "paddingTop": 10,
+        "paddingRight": 10,
+        "paddingBottom": 10,
+        "paddingLeft": 10,
+        "pointerEvents": "none"
+    },
+    "left-addon glyphicon": {
+        "left": 0
+    },
+    "right-addon glyphicon": {
+        "right": 0
+    },
+    "left-addon input": {
+        "paddingLeft": 30
+    },
+    "right-addon input": {
+        "paddingRight": 30
     }
 });

@@ -72,7 +72,7 @@ const renderFullPage = (html, initialState) => {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Thinks & Writes</title>
+        <title>Think & Write</title>
         <link rel="stylesheet" href=${cssPath} />
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="/img/oie_2103621IzOaPHTD.jpg" type="image/png" />
@@ -123,7 +123,7 @@ app.use((req, res, next) => {
         res.status(200).end(renderFullPage(initialView, finalState));
       })
       .catch(() => {
-        res.end(renderFullPage('Error', {}));
+        res.end(renderFullPage('No access!', {}));
       });
   });
 });
@@ -145,12 +145,15 @@ io.on('connection', function(socket){
   socket.on('delete:article', function(article){
     io.emit('delete:article', article);
   });
+  socket.on('vote:article', function(article) {
+    io.emit('vote:article', article);
+  });
 });
 
 //conection
 server.listen(serverConfig.port, (error) => {
   if (!error) {
-    console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
+    console.log(`MERN is running on port: ${serverConfig.port}!`); // eslint-disable-line
   }
 });
 
